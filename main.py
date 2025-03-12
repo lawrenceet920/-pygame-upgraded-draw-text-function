@@ -36,7 +36,8 @@ def main():
 
     fpos1 = (random.randint(0, 400), random.randint(0, 300))
     fpos2 = (random.randint(0, 400), random.randint(200, 500))
-    fpos3 = (random.randint(200, 600), random.randint(200, 500))
+    # fpos3 = (random.randint(200, 600), random.randint(200, 500))
+    fpos3 = (400, 300)
 
     while running:
         running = handle_events()
@@ -44,7 +45,7 @@ def main():
 
         draw_text(screen, 'Regular Text', fsize_normal, config.BLACK, fpos1)
         draw_text(screen, 'Oddish', fsize_italic, config.CYAN, fpos2, font_name=basic_fontname, bold=True, italic=True)
-        draw_text(screen, 'Abnormal', fsize_custom, config.PURPLE, fpos3, custom_fontname)
+        draw_text(screen, 'Abnormal', fsize_custom, config.PURPLE, fpos3, custom_fontname, rotation=50)
 
         # Next frame
         pygame.display.flip()
@@ -54,12 +55,13 @@ def main():
 
 # Nonstandard Functions
 
-def draw_text(screen, text, font_size, color, position, font_name='FreeMono.ttf', antianiased=True, bold=False, italic=False):
+def draw_text(screen, text, font_size, color, position, font_name='FreeMono.ttf', antianiased=True, bold=False, italic=False, rotation=0):
     font = pygame.font.Font(font_name, font_size)
     font.set_bold(bold)
     font.set_italic(italic)
 
     textsurface = font.render(text, antianiased, color)
+    textsurface = pygame.transform.rotate(textsurface, rotation)
     screen.blit(textsurface, position)
 
 
