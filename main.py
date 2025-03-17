@@ -14,14 +14,25 @@ def init_game():
     pygame.display.set_caption(config.TITLE)
     return screen
 
-def handle_events():
+def handle_events(x1, y1):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             return False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
-                return False
-    return True
+                return x1, y1, False
+    
+    # Move keys
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_UP]:
+                y1 -=10
+            if keys[pygame.K_DOWN]:
+                y1 +=10
+            if keys[pygame.K_LEFT]:
+                x1 -=10
+            if keys[pygame.K_RIGHT]:
+                x1 +=10
+    return x1, y1, True
 def main():
     screen = init_game()
     clock = pygame.time.Clock()
@@ -36,16 +47,15 @@ def main():
 
     fpos1 = (random.randint(0, 400), random.randint(0, 300))
     fpos2 = (random.randint(0, 400), random.randint(200, 500))
-    # fpos3 = (random.randint(200, 600), random.randint(200, 500))
-    fpos3 = (400, 300)
-
+    x1, y1 = (random.randint(200, 600), random.randint(200, 500))
+    
     while running:
-        running = handle_events()
+        x1, y1, running = handle_events(x1, y1)
         screen.fill(config.WHITE)
 
         draw_text(screen, 'Regular Text', fsize_normal, config.BLACK, fpos1)
         draw_text(screen, 'Oddish', fsize_italic, config.CYAN, fpos2, font_name=basic_fontname, bold=True, italic=True)
-        draw_text(screen, 'Abnormal', fsize_custom, config.PURPLE, fpos3, custom_fontname, rotation=50)
+        draw_text(screen, 'Abnormal', fsize_custom, config.PURPLE, (x1, y1), custom_fontname, rotation=50)
 
         # Next frame
         pygame.display.flip()
